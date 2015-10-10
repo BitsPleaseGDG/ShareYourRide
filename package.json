@@ -12,6 +12,11 @@
     "express": "~4.13.1",
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
+    "mysql": "^2.9.0",
+    "passport": "^0.3.0",
+    "passport-facebook": "^2.0.0",
+    "passport-google": "^0.3.0",
+    "passport-local": "^1.0.0",
     "serve-favicon": "~2.3.0"
   }
 }

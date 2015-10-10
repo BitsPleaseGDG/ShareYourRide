@@ -1,12 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var connection=require('../app');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   // res.render('index', { title: 'Express' });
   console.log(connection)
   myconnect(res)
   // res.send('hello')
+
+/* GET home page. */
+
 });
 
 function myconnect(res){
