@@ -51,6 +51,7 @@ var connection = mysql.createConnection({
   password : config.mysql.password,
   database : config.mysql.database
 });
+app.connection = connection;
 
 
 // view engine setup
@@ -100,6 +101,10 @@ function(req, res) {
 app.get('/logout', function(req, res){
 req.logout();
 res.redirect('/');
+});
+
+app.get('/ping', function(req, res){
+    res.status(200).send("pong!");
 });
 
 
