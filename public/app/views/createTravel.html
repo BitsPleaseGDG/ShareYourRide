@@ -1,0 +1,47 @@
+<div class="container" xmlns="http://www.w3.org/1999/html">
+
+    <div class="login-main window-new ">
+        <div class="head-info">
+
+            <!--label class="lbl-close"> </label-->
+            <label class="lbl-1"> </label>
+            <label class="lbl-2"> </label>
+            <label class="lbl-3"> </label>
+        </div>
+        <div class="clear"> </div>
+        <div class="login">
+
+            <div class="text-center">	<img ng-src="{{user.avatar}}" class="img img-circle">
+                <div class="text-center name-title">{{user.name}} is Creating Travel</div>
+            </div>
+        </div>
+        <div >
+
+        </div>
+
+        <div class="row">
+            <h1>Timings</h1>    <!--<form action="random.php">-->
+            <div class="col-sm-6"><input  ng-model="model.startDate" type="date"/></div>
+            <div class="col-sm-6"><input  ng-model="model.endDate" type="date"/></div>
+            <span></span>
+            <div class="col-md-12">To</div>
+            <div class="col-sm-6" ><input ng-model="model.startTime" type="time"/></div>
+            <div class="col-sm-6" ><input ng-model="model.endTime" type="time"/></div>
+            <!--<button class="btn  btn-primary">Trips</button>-->
+            <!--</form>-->
+        </div>
+
+        <div class="row">
+            <h1>Location</h1>
+            <div class="col-sm-5"><input type="Text"/></div>
+            <div class="col-sm-2">To</div>
+            <div class="col-sm-5"><input type="text"/></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="btn btn-block btn-primary">Create</div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

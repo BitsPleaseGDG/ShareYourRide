@@ -9,7 +9,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session')
 
 var routes = require('./routes/index');
-var ping = require('./routes/ping');
+var rest = require('./routes/rest');
 var connect = require('./models')().connection
 
 var config = require('./keys.js')
@@ -158,6 +158,8 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes)
+
+app.use('/api/v1', rest)
 app.get('/dashboard', ensureAuthenticated, function(req, res){
   // res.send(req.user);
 res.render('dashboard', { user: req.user });

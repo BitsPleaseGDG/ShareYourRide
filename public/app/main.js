@@ -3,9 +3,9 @@ var elementapp = angular.module('dashboardApp',['dashboardApp.controllers','ngRo
             controller: 'indexController',
             templateUrl: baseUrl+'app/views/index.html'
         })
-        .when('/test', {
-        	controller: 'testController',
-        	templateUrl: baseUrl+'app/views/test.html'
+        .when('/create-travel', {
+        	controller: 'createTravelController',
+        	templateUrl: baseUrl+'app/views/createTravel.html'
         })
         .otherwise({redirectTo:'/'});
     }]);
