@@ -139,7 +139,7 @@ app.connection = connection;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'html');
+app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -158,14 +158,14 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes)
-app.get('/account', ensureAuthenticated, function(req, res){
-  res.send(req.user);
-res.render('account', { user: req.user });
+app.get('/dashboard', ensureAuthenticated, function(req, res){
+  // res.send(req.user);
+res.render('dashboard', { user: req.user });
 });
 
 
 app.get('/', notAuthenticated, function(req, res){
-res.render('login', { user: req.user });
+res.render('index', { user: req.user });
 });
 
 app.get('/auth/facebook',notAuthenticated,
@@ -178,7 +178,7 @@ app.get('/auth/facebook/callback'
 function(req, res) {
   console.log('logging stuff');
   // console.log(res);
- res.redirect('/account');
+ res.redirect('/dashboard');
 });
 
 app.get('/auth/google',notAuthenticated,
@@ -192,7 +192,7 @@ function(req, res) {
   console.log('logging stuff');
   // console.log(res);
   // res.send(req.user);
- res.redirect('/account');
+ res.redirect('/dashboard');
 });
 app.get('/logout', function(req, res){
 req.logout();
@@ -243,7 +243,7 @@ res.redirect('/')
 }
 function notAuthenticated(req, res, next) {
 if (!req.isAuthenticated()) { return next(); }
-res.redirect('/account')
+res.redirect('/dashboard')
 }
 
 module.exports = app;

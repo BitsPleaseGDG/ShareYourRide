@@ -94,7 +94,7 @@ label.lbl-1 {
   display: block;
   float: right;
   border-radius: 50%;
-  margin: 12px 10px 0px 0px;
+  margin: 6px 10px 0px 0px;
 }
 label.lbl-2 {
   background: #FFC727;
@@ -103,7 +103,7 @@ label.lbl-2 {
   display: block;
   float: right;
   border-radius: 50%;
-   margin: 12px 10px 0px 0px;
+   margin: 6px 10px 0px 0px;
 }
 label.lbl-3 {
   background:#61BBA9;
@@ -112,7 +112,7 @@ label.lbl-3 {
   display: block;
   float: right;
   border-radius: 50%;
-  margin: 12px 10px 0px 0px;
+  margin: 6px 10px 0px 0px;
 }
 label.lbl-close {
   background: url('../images/close.png') no-repeat 0px 0px;;
