@@ -155,29 +155,20 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
-// app.get('/', routes.index);
-// app.get('/ping', routes.ping);
-// app.get('/account', ensureAuthenticated, function(req, res){
-// res.render('account', { user: req.user });
-// });
-
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes)
-;app.use('/ping', ping);
 app.get('/account', ensureAuthenticated, function(req, res){
+  res.send(req.user);
 res.render('account', { user: req.user });
 });
 
 
-app.get('/', function(req, res){
+app.get('/', notAuthenticated, function(req, res){
 res.render('login', { user: req.user });
 });
 
-app.get('/auth/facebook',
+app.get('/auth/facebook',notAuthenticated,
 passport.authenticate('facebook',{scope: 'email'}),
 function(req, res){
   console.log(res);
@@ -190,7 +181,7 @@ function(req, res) {
  res.redirect('/account');
 });
 
-app.get('/auth/google',
+app.get('/auth/google',notAuthenticated,
 passport.authenticate('google',{ scope: ['https://www.googleapis.com/auth/plus.login', 'email'] }),
 function(req, res){
   console.log(res);
@@ -200,17 +191,13 @@ app.get('/auth/google/callback'
 function(req, res) {
   console.log('logging stuff');
   // console.log(res);
+  // res.send(req.user);
  res.redirect('/account');
 });
 app.get('/logout', function(req, res){
 req.logout();
 res.redirect('/');
 });
-
-app.get('/ping', function(req, res){
-    res.status(200).send("pong!");
-});
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -253,6 +240,10 @@ app.use(function(err, req, res, next) {
 function ensureAuthenticated(req, res, next) {
 if (req.isAuthenticated()) { return next(); }
 res.redirect('/')
+}
+function notAuthenticated(req, res, next) {
+if (!req.isAuthenticated()) { return next(); }
+res.redirect('/account')
 }
 
 module.exports = app;

@@ -6,17 +6,17 @@ var connect = require('../models')().connection
 /* GET home page. */
 
 
-router.get('/', function (req, res) {
-	// console.log(connection);
-	var a = connect();
-	a.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
- if (err) throw err;
+// router.get('/', function (req, res) {
+// 	// console.log(connection);
+// 	var a = connect();
+// 	a.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
+//  if (err) throw err;
 
- console.log('The solution is: ', rows[0].solution);
-});
-	res.send({"yo":"yoyo"});
-    // res.render('index', { user : req.user });
-});
+//  console.log('The solution is: ', rows[0].solution);
+// });
+// 	res.send({"yo":"yoyo"});
+//     // res.render('index', { user : req.user });
+// });
 
 router.get('/logout', function(req, res) {
     req.logout();
