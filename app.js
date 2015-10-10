@@ -6,14 +6,17 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var session = require('express-session')
 
 var routes = require('./routes/index');
 var ping = require('./routes/ping');
+var connect = require('./models')().connection
 
 var config = require('./keys.js')
 var passport = require('passport')
 var FacebookStrategy = require('passport-facebook').Strategy;
-var GoogleStrategy = require('passport-google').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var connection = connect();
 
 // serialize and deserialize
 passport.serializeUser(function(user, done) {
@@ -33,12 +36,92 @@ done(null, obj);
 passport.use(new FacebookStrategy({
  clientID: config.facebook.clientID,
  clientSecret: config.facebook.clientSecret,
- callbackURL: config.facebook.callbackURL
+ callbackURL: config.facebook.callbackURL,
+profileFields: ['name', 'email', 'displayName','link','photos'],
+  profile: true
+
 },
 function(accessToken, refreshToken, profile, done) {
- process.nextTick(function () {
-   return done(null, profile);
+
+   process.nextTick(function () {
+    var myQuery = 'SELECT * FROM users WHERE email = ?';
+    // console.log('This is photo')
+      var object;
+
+    connection.query(myQuery,[profile.emails[0].value], function(error, row) {
+      if(error)
+        throw error;
+      // console.log(row);
+
+      if(row.length == 0) {
+        myQuery = 'INSERT INTO users (name, email, avatar) VALUES (? , ?, ?)';
+        console.log();
+        var photo = null;
+        if(profile.photos) {
+          photo = profile.photos[0].value
+        }
+        connection.query(myQuery,[profile.displayName,profile.emails[0].value, photo], function(error, row) {
+          console.log(row);
+          object = {id: row.insertId, avatar: photo, email: profile.emails[0].value, name: profile.displayName };
+
+        });
+      }
+      else {
+        object = row[0];
+      }
+      return done(null, object);
+
+
+    });
+    // console.log(a);
  });
+
+}
+));
+
+passport.use(new GoogleStrategy({
+    clientID: config.google.clientID,
+    clientSecret: config.google.clientSecret,
+    callbackURL: config.google.callbackURL,
+  profile: true
+
+},
+function(accessToken, refreshToken, profile, done) {
+
+   process.nextTick(function () {
+    var myQuery = 'SELECT * FROM users WHERE email = ?';
+    // console.log('This is photo')
+      var object;
+      console.log(profile);
+
+    connection.query(myQuery,[profile.emails[0].value], function(error, row) {
+      if(error)
+        throw error;
+      // console.log(row);
+
+      if(row.length == 0) {
+        myQuery = 'INSERT INTO users (name, email, avatar) VALUES (? , ?, ?)';
+        console.log();
+        var photo = null;
+        if(profile.photos) {
+          photo = profile.photos[0].value
+        }
+        connection.query(myQuery,[profile.displayName,profile.emails[0].value, photo], function(error, row) {
+          console.log(row);
+          object = {id: row.insertId, avatar: photo, email: profile.emails[0].value, name: profile.displayName };
+
+        });
+      }
+      else {
+        object = row[0];
+      }
+      return done(null, object);
+
+
+    });
+    // console.log(a);
+ });
+
 }
 ));
 
@@ -64,9 +147,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-
+app.use(session({
+  secret: config.session.secret,
+   resave: true,
+    saveUninitialized: true
+}))
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 
 // app.get('/', routes.index);
@@ -78,8 +166,8 @@ app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/ping', ping);
+app.use('/', routes)
+;app.use('/ping', ping);
 app.get('/account', ensureAuthenticated, function(req, res){
 res.render('account', { user: req.user });
 });
@@ -90,12 +178,28 @@ res.render('login', { user: req.user });
 });
 
 app.get('/auth/facebook',
-passport.authenticate('facebook'),
+passport.authenticate('facebook',{scope: 'email'}),
 function(req, res){
+  console.log(res);
 });
-app.get('/auth/facebook/callback',
-passport.authenticate('facebook', { failureRedirect: '/' }),
+app.get('/auth/facebook/callback'
+,passport.authenticate('facebook', { failureRedirect: '/' }),
 function(req, res) {
+  console.log('logging stuff');
+  // console.log(res);
+ res.redirect('/account');
+});
+
+app.get('/auth/google',
+passport.authenticate('google',{ scope: ['https://www.googleapis.com/auth/plus.login', 'email'] }),
+function(req, res){
+  console.log(res);
+});
+app.get('/auth/google/callback'
+,passport.authenticate('google', { failureRedirect: '/' }),
+function(req, res) {
+  console.log('logging stuff');
+  // console.log(res);
  res.redirect('/account');
 });
 app.get('/logout', function(req, res){

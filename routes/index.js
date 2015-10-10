@@ -7,7 +7,7 @@ var connect = require('../models')().connection
 
 
 router.get('/', function (req, res) {
-	console.log(connection);
+	// console.log(connection);
 	var a = connect();
 	a.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
  if (err) throw err;
