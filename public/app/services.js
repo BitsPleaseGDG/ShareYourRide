@@ -67,7 +67,10 @@ var dashboardAppServices = angular.module("dashboardApp.services", []);
             createTravel : function(model) {
                 var deferred = $q.defer();
                 var start = model.startTime.getTime() + model.startDate.getTime();
+                console.log(start);
                 var end = model.endTime.getTime() + model.endDate.getTime();
+                console.log(end);
+
                 var urlToUse = baseUrl + 'api/v1/add'+'?from='+model.from+'&to='+model.to+'&start='+start+'&end='+end;
                 console.log(urlToUse);
 

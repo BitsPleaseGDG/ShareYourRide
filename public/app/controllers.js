@@ -74,6 +74,9 @@ var elementapp = angular.module('dashboardApp.controllers',["dashboardApp.servic
         });
         allServices.getOverlappingTravels($routeParams.id).then(function(data) {
             console.log(data.groups);
+            if(data.groups.length == 0 && data.travels.length == 0) {
+                $scope.message = "No matching journeys found!"
+            }
             if(data.groups.length > 0) {
                 $scope.from = data.groups[0].start_from;
                 $scope.to = data.groups[0].upto;
