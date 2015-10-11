@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
   res.send('hello')
 });
 router.get('/add',function(req,res,next){
-	var response={'success':false};
+	var response={type:false};
 	var id=req.query.id;
 	var start=req.query.start;
 	var end=req.query.end;
@@ -39,10 +39,11 @@ router.get('/add',function(req,res,next){
 		res.send(JSON.stringify(response));
 	}
 	var query="INSERT INTO `hack`.`travels` (`id`, `user_id`, `start_datetime`, `end_datetime`, `start_from`, `upto`) VALUES (NULL, ?, ?, ?, ?, ?)";
-	connection.query(query,[id,start,end,from,to]);
-
-	response.success=true;
-	res.send(JSON.stringify(response));
+	connection.query(query,[id,start,end,from,to],function(err,rows){
+		response.type=true;
+		response.insert_id=rows.insert_id;
+		res.send(JSON.stringify(response));
+	});
 });
 
 router.get('/displayall',ensureAPIAuthenticated,function(req,res,next){
