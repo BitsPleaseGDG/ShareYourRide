@@ -120,7 +120,7 @@ router.get('/addtogroup',ensureAPIAuthenticated,function(req,res,next){
 			}
 		})
 	});
-})
+});
 router.get('/alltrip',function(req,res){
 	var id=req.user.id;
 	var tosend={};
@@ -151,6 +151,29 @@ router.get('/alltrip',function(req,res){
 		}
 		res.send(tosend);
 	})
+});
+router.get('/groupinfo',function(req,res){
+	var group_id=req.query.group_id;
+	var query='SELECT * FROM groups WHERE id=?';
+	var tosend={};
+	connection.query(query,[group_id],function(err,rows){
+		if(rows==undefined){
+			res.send({type:false});
+			return;
+		}
+		tosend.info=rows[0];
+		query='SELECT travels.*, users.name, users.email, users.avatar FROM group_travels WHERE group_id=?';
+		query+=' LEFT JOIN on travels.user_id=users.id';
+		console.log(query)
+		connection.query(query,[group_id],function(err,rows){
+			if(rows==undefined){
+				res.send(tosend);
+				return;
+			}
+			tosend.travels=rows;
+			res.json(tosend);
+		})
+	});
 })
 function GroupEmptiness(id,callback){
 	var query='SELECT COUNT(*) as count FROM `hack`.`group_travels` WHERE `group_id`=?';
@@ -225,10 +248,11 @@ function getFeed(s1,e1,start_from,upto,travelid,res){
 	var count=0;
 	var tosend={};
 	var totalq=2;
-	var query='SELECT * FROM travels WHERE (`start_datetime` <= ?) AND (`end_datetime` >= ? ) AND `id` != ?  AND engaged=0 AND `start_from`=? AND `upto`=?';
+	var query='SELECT travels.*,users.avatar,users.name FROM travels WHERE (`start_datetime` <= ?) AND (`end_datetime` >= ? ) AND `id` != ?  AND engaged=0 AND `start_from`=? AND `upto`=?';
+	query+=' LEFT JOIN users ON users.id=travels.user_id';
 	connection.query(query,[e1,s1,travelid,start_from,upto],function(err,rows,fields){
 		if(err){
-			tosend.travels=false;
+			tosend.travels=[];
 		}else{
 			tosend.travels=rows;
 		}
