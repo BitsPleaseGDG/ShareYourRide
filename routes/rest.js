@@ -45,11 +45,12 @@ router.get('/add',function(req,res,next){
 	res.send(JSON.stringify(response));
 });
 
-router.get('/displayall',function(req,res,next){
+router.get('/displayall',ensureAPIAuthenticated,function(req,res,next){
 	var travelid=req.query.travelid;
-	var query='SELECT * FROM travels WHERE id=?';
+	var query='SELECT * FROM travels WHERE id=? and user_id=?';
+	var id=req.user.id;
 	var s1,e1;
-	connection.query(query,[travelid],function(err,rows,fields){
+	connection.query(query,[travelid,id],function(err,rows,fields){
 		if(rows.length==0){
 			res.send({type:false});
 			return;
@@ -62,10 +63,11 @@ router.get('/displayall',function(req,res,next){
 	});
 });
 
-router.get('/makegroup',function(req,res,next){
+router.get('/makegroup',ensureAPIAuthenticated,function(req,res,next){
 	var capacity=req.query.cap;
 	var first_travel_id=req.query.fti;
 	var second_travel_id=req.query.sti;
+	var id=req.user.id;
 	if(second_travel_id==first_travel_id){
 		res.send({type:false});
 		return;
@@ -75,6 +77,11 @@ router.get('/makegroup',function(req,res,next){
 		if(rows.length!=2){
 			res.send({type:false});
 			return;
+		}else{
+			if(rows[0].user_id!=id&&rows[1].user_id!=id){
+				res.send({type:false});
+				return;
+			}
 		}
 		var grouptime=commonIntervalOfTwo(rows[0].start_datetime,rows[0].end_datetime,rows[1].start_datetime,rows[1].end_datetime);
 		if(grouptime==false || rows[0].engaged==1 || rows[1].engaged==1 || !checkDestination(rows[0].start_from,rows[0].upto,rows[1].start_from,rows[1].upto)){
@@ -85,26 +92,22 @@ router.get('/makegroup',function(req,res,next){
 		finallymakegroup(res,first_travel_id,second_travel_id,rows[0].start_from,rows[0].upto,grouptime,capacity);
 	});
 });
-router.get('/addtogroup',function(req,res,next){
+router.get('/addtogroup',ensureAPIAuthenticated,function(req,res,next){
+	var id=req.user.id;
 	var group_id=req.query.group_id;
 	var travel_id=req.query.travel_id;
-	var query='SELECT * FROM `hack`.`travels` WHERE `id` = ? AND `engaged` = 0';
-	connection.query(query,[travel_id],function(err,rows){
+	console.log(id)
+	var query="SELECT * FROM `hack`.`travels` WHERE `id` = ? AND `user_id` = ?  AND `engaged` = ?";
+	connection.query(query,[travel_id,id,0],function(err,rows){
 		if(rows.length < 1){
 			res.send({type:false});
 			return;
 		}
 		GroupEmptiness(group_id,function(e){
 			if(e>=1){
-				connection.query(query,[travel_id],function(err,rows){
-					if(rows==undefined){
-						res.send({type:false,e:err});
-						return;
-					}else{
-						insertIntoGroupTravels(group_id,travel_id);
-						res.send({type:true});
-					}
-				});
+				insertIntoGroupTravels(group_id,travel_id);
+				updateEngagement(travel_id,true);
+				res.send({type:true});
 			}else{
 				res.send({type:false});
 				return;
@@ -204,10 +207,8 @@ function getFeed(s1,e1,start_from,upto,travelid,res){
 	query+=' INNER JOIN group_travels ON travels.id = group_travels.travel_id';
 	query+=' INNER JOIN users ON travels.user_id=users.id';
 	query+=' INNER JOIN groups ON groups.id = group_travels.group_id'
-	query+=' WHERE groups.start_from = ? AND groups.upto = ? AND travels.engaged=1 AND (groups.start_datetime <= ? AND groups.end_datetime >=?)'
-	console.log(start_from,upto,s1,e1)
+	query+=' WHERE groups.start_from = ? AND groups.upto = ? AND travels.engaged=1 AND (groups.start_datetime <= ? AND groups.end_datetime >=?)';
 	connection.query(query,[start_from,upto,e1,s1],function(err,rows){
-		console.log(rows,'yo')
 		if(err){
 			console.log(err)
 			tosend.groups=query;
