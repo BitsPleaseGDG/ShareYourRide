@@ -148,8 +148,8 @@ app.use(cookieParser());
 app.use(session({
   secret: config.session.secret,
    resave: true,
-    saveUninitialized: true
-}))
+    saveUninitialized: false
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -245,6 +245,7 @@ app.connection=connection;
 
 function ensureAuthenticated(req, res, next) {
 if (req.isAuthenticated()) { return next(); }
+    console.log('This is the case');
 res.redirect('/')
 }
 function notAuthenticated(req, res, next) {

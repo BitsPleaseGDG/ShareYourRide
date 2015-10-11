@@ -921,3 +921,21 @@ a:hover {
     color: white;
     text-decoration: none;
 }
+[type=date],[type=time],[type=text]{
+    font-size: 20px;
+    width: 266px;
+    height: 40px;
+    padding: 0 20px;
+}
+.dsad{
+    background: #F85D47;
+    width: 12px;
+    height: 12px;
+    display: block;
+    float: right;
+    border-radius: 50%;
+    margin: 6px 10px 0px 0px;
+}
+.boli{
+    font-weight: bold;
+}

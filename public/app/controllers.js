@@ -1,4 +1,7 @@
-
+Date.prototype.addHours = function(h) {
+    this.setTime(this.getTime() + (h*60*60*1000));
+    return this;
+}
 function groupBy( array , f )
 {
     var groups = {};
@@ -150,7 +153,24 @@ var elementapp = angular.module('dashboardApp.controllers',["dashboardApp.servic
 
     }]);
     function convertTime(ms) {
-        return new Date(parseInt(ms)).toString();
+        var a =  new Date(parseInt(ms)).addHours(5.5);
+//        return a.toString();
+        var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        var date = a.getDate();
+        var hours = a.getHours();
+
+        var minutes = a.getMinutes();
+        if (hours<10) {
+            hours = '0' + hours;
+        }
+        if (minutes<10) {
+            minutes = '0' + minutes;
+        }
+        var month = monthNames[a.getMonth()];
+        var year = a.getFullYear();
+        return hours+'.'+minutes+', ' +month+' ' + date+  ', ' +year;
     }
 
 
