@@ -14,7 +14,8 @@
             <div class="text-center"><img ng-src="{{user.avatar}}" class="img img-circle">
 
                 <div class="text-center name-title">{{user.name}} Travel</div>
-                <div class="text-center name-subtitle">from {{from}} to {{to}}</div>
+                <div ng-if="!message" class="text-center name-subtitle">from {{from}} to {{to}}</div>
+                <div class="text-center name-subtitle" ng-bind="message"></div>
 
 
             </div>
