@@ -161,11 +161,15 @@ router.get('/groupinfo',function(req,res){
 			return;
 		}
 		tosend.info=rows[0];
-		query='SELECT travels.*, users.name, users.email, users.avatar FROM group_travels WHERE group_id=?';
-		query+=' LEFT JOIN on travels.user_id=users.id';
+		query='SELECT group_travels.*, users.name, users.email, users.avatar FROM group_travels';
+		query+=' INNER JOIN travels ON group_travels.travel_id=travels.id';
+		query+=' INNER JOIN users ON users.id=travels.user_id'
+		query+=' WHERE group_id=?';
 		console.log(query)
 		connection.query(query,[group_id],function(err,rows){
 			if(rows==undefined){
+				tosend.hello='hello'
+				console.log(err)
 				res.send(tosend);
 				return;
 			}
@@ -201,7 +205,7 @@ function finallymakegroup(res,fti,sti,start_from,upto,grouptime,capacity){
 		var insert_id=rows.insertId;
 		insertIntoGroupTravels(insert_id,fti);
 		insertIntoGroupTravels(insert_id,sti);
-		res.send('success');
+		res.send({type:true,insertId:insert_id});
 	})
 }
 
