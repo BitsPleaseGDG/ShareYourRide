@@ -134,15 +134,20 @@ var elementapp = angular.module('dashboardApp.controllers',["dashboardApp.servic
         allServices.getCurrentUser().then(function (data) {
             $scope.user = data.data;
         });
-        allServices.getOverlappingTravels($routeParams.id).then(function(data) {
-            $scope.data = data.groups;
+        allServices.getGroupInfo($routeParams.id).then(function(data) {
+            console.log(data.info.start_datetime);
+            data.info.start_datetime = convertTime(data.info.start_datetime);
+            data.info.end_datetime = convertTime(data.info.end_datetime);
+            $scope.data = data.travels;
+
+            $scope.group = data.info;
         })
 
 
 
     }]);
     function convertTime(ms) {
-        return new Date(ms).toString();
+        return new Date(parseInt(ms)).toString();
     }
 
 

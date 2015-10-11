@@ -89,6 +89,18 @@ var dashboardAppServices = angular.module("dashboardApp.services", []);
                         deferred.reject();
                     });
                 return deferred.promise;
+            },
+            getGroupInfo: function (id) {
+                var deferred = $q.defer();
+                var urlToUse = baseUrl + 'api/v1/groupinfo?group_id='+id;
+                console.log(urlToUse);
+
+                $http.get(urlToUse).success(function (data) {
+                    deferred.resolve(data);
+                }).error(function (data) {
+                        deferred.reject();
+                    });
+                return deferred.promise;
             }
         }
 

@@ -32,7 +32,8 @@
                         <div> to</div>
                         <div>{{record.end_datetime}}</div>
                     </div>
-                    <button type="button" class=" btn-l btn-2 ">View</button>
+                    <a ng-if="!record.engaged" class=" btn-l btn-2 " style="display: inline-block;" ng-href="#/travels/{{record.id}}">View</a>
+                    <a ng-if="record.engaged" class=" btn-l btn-2 " style="display: inline-block;" ng-href="#/groups/{{record.group_id}}">View</a>
                 </div>
             </div>
 
