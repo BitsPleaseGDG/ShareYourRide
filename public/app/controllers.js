@@ -34,8 +34,6 @@ var elementapp = angular.module('dashboardApp.controllers',["dashboardApp.servic
                 console.log(data);
                 if(data.type==true) {
                     $location.path('/travels/'+data.insert_id);
-
-
                 }
             });
         };
@@ -57,8 +55,12 @@ var elementapp = angular.module('dashboardApp.controllers',["dashboardApp.servic
         allServices.getCurrentUser().then(function (data) {
             $scope.user = data.data;
         });
-        allServices.getUserJourneys().then(function(data) {
-            $scope.data = data.data;
+        allServices.getAllTravels().then(function(data) {
+            for (var i = 0; i<data.travels.length; i++) {
+                data.travels[i].start_datetime = convertTime(data.travels[i].start_datetime);
+                data.travels[i].end_datetime = convertTime(data.travels[i].end_datetime);
+            }
+            $scope.data = data.travels;
         })
 
 
@@ -140,7 +142,7 @@ var elementapp = angular.module('dashboardApp.controllers',["dashboardApp.servic
 
     }]);
     function convertTime(ms) {
-        return new Date(ms);
+        return new Date(ms).toString();
     }
 
 
