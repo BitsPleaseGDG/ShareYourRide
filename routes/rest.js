@@ -122,7 +122,7 @@ router.get('/addtogroup',ensureAPIAuthenticated,function(req,res,next){
 	});
 })
 router.get('/alltrip',function(req,res){
-	var id=6;
+	var id=req.user.id;
 	var tosend={};
 	var query='SELECT users.id as user_id, users.avatar, users.name as name, groups.id as group_id, groups.capacity as capacity, groups.start_from as start_from, groups.upto as upto, groups.start_datetime, groups.end_datetime';
 	query+=' FROM travels';
