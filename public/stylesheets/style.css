@@ -908,4 +908,12 @@ button.btn-15:hover{
 .name-subtitle {
     font-size: 16px;
 }
+button[disabled], html input[disabled] {
+    cursor: default;
+    background: lightgrey;
+}
+button[disabled]:hover {
+    cursor: default;
+    background: lightgrey;
+}
 /*--//button--*/
