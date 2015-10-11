@@ -64,7 +64,7 @@ router.get('/displayall',ensureAPIAuthenticated,function(req,res,next){
 });
 
 router.get('/makegroup',ensureAPIAuthenticated,function(req,res,next){
-	var capacity=req.query.cap;
+	var capacity=req.query.cap>2?req.query.cap:2;
 	var first_travel_id=req.query.fti;
 	var second_travel_id=req.query.sti;
 	var id=req.user.id;
