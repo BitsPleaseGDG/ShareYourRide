@@ -15,29 +15,9 @@
             $scope.user = data.data;
         });
         $scope.submit = function() {
-            console.log('Submit Start');
-            if(angular.isDefined($scope.model.startTime)) {
-                console.log($scope.model.startTime);
-            }
-            if(angular.isDefined($scope.model.endTime)) {
-                console.log($scope.model.endTime);
-
-            }
-            if(angular.isDefined($scope.model.startDate)) {
-                console.log($scope.model.startDate);
-            }
-            if(angular.isDefined($scope.model.endDate)) {
-                console.log($scope.model.endDate);
-
-            }
-            if(angular.isDefined($scope.model.from)) {
-                console.log($scope.model.from);
-
-            }
-            if(angular.isDefined($scope.model.to)) {
-                console.log($scope.model.to);
-
-            }
+            allServices.createTravel($scope.model).then(function(data) {
+                console.log(data);
+            });
         };
 
 

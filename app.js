@@ -233,14 +233,14 @@ app.use(function(err, req, res, next) {
   });
 });
 
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'hack'
-});
-connection.connect();
+//var mysql      = require('mysql');
+//var connection = mysql.createConnection({
+//  host     : 'localhost',
+//  user     : 'root',
+//  password : '',
+//  database : 'hack'
+//});
+//connection.connect();
 app.connection=connection;
 
 function ensureAuthenticated(req, res, next) {

@@ -39,6 +39,20 @@ var dashboardAppServices = angular.module("dashboardApp.services", []);
                     });
                 return deferred.promise;
 
+            },
+            createTravel : function(model) {
+                var deferred = $q.defer();
+                var start = model.startTime.getTime() + model.startDate.getTime();
+                var end = model.endTime.getTime() + model.endDate.getTime();
+                var urlToUse = baseUrl + 'api/v1/add'+'?from='+model.from+'&to='+model.to+'&start='+start+'&end='+end;
+                console.log(urlToUse);
+
+                $http.get(urlToUse).success(function (data) {
+                    deferred.resolve(data);
+                }).error(function (data) {
+                        deferred.reject();
+                    });
+                return deferred.promise;
             }
         }
 
