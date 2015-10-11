@@ -16,7 +16,7 @@ var elementapp = angular.module('dashboardApp',['dashboardApp.controllers','ngRo
                 templateUrl: baseUrl+'app/views/showJourney.html'
             })
             .when('/groups/:id', {
-                controller: 'showJourney',
+                controller: 'group',
                 templateUrl: baseUrl+'app/views/group.html'
             })
         .otherwise({redirectTo:'/'});

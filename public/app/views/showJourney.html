@@ -14,13 +14,40 @@
             <div class="text-center"><img ng-src="{{user.avatar}}" class="img img-circle">
 
                 <div class="text-center name-title">{{user.name}} Travel</div>
-                <div class="text-center name-subtitle">from IIT Kanpur to Railway Station</div>
+                <div class="text-center name-subtitle">from {{from}} to {{to}}</div>
 
 
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" ng-repeat="record in groups">
+                <div class="search-dialog">
+                    <!--<img ng-src="{{user.avatar}}" class="img img-circle">-->
+                    <div class="padding-bottom-5">
+                        <div class="text-center">
+                            <ul class="list-inline">
+                                <li ng-repeat="user in record">
+                                    <!--{{user.name}}-->
+                                    <img ng-src="{{user.avatar}}" class="img img-circle">
+                                </li>
+                            </ul>
+
+                            <div class="text-center name-title">Group</div>
+                            <div class="text-center name-subtitle">(Spots Left = {{record[0].spotsLeft}})</div>
+
+                            <br/>
+
+                        </div>
+                        <div class="padding-top-5">
+                            <div>{{record[0].start_datetime}}</div>
+                            <div> to</div>
+                            <div>{{record[0].end_datetime}}</div>
+                        </div>
+                        <button type="button" class=" btn-l btn-2 " ng-click="addgroup(record[0].group_id)" ng-disabled="!record[0].spotsLeft">Join</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" ng-repeat="user in individuals">
                 <div class="search-dialog">
                     <!--<img ng-src="{{user.avatar}}" class="img img-circle">-->
                     <div class="padding-bottom-5">
@@ -33,39 +60,11 @@
 
                         </div>
                         <div class="padding-top-5">
-                            <div>1:00 pm, 25 January 2015</div>
+                            <div>{{user.start_datetime}}</div>
                             <div> to</div>
-                            <div> 2:00 pm, 26 January 2015</div>
+                            <div>{{user.end_datetime}}</div>
                         </div>
-                        <button type="button" class=" btn-l btn-2 ">Join</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="search-dialog">
-                    <!--<img ng-src="{{user.avatar}}" class="img img-circle">-->
-                    <div class="padding-bottom-5">
-                        <div class="text-center">
-                            <ul class="list-inline">
-                                <li><img ng-src="{{user.avatar}}" class="img img-circle"></li>
-                                <li><img ng-src="{{user.avatar}}" class="img img-circle"></li>
-                                <li><img ng-src="{{user.avatar}}" class="img img-circle"></li>
-                                <li><img ng-src="{{user.avatar}}" class="img img-circle"></li>
-
-                            </ul>
-
-                            <div class="text-center name-title">Group</div>
-                            <div class="text-center name-subtitle">(Spots Left = 2)</div>
-
-                            <br/>
-
-                        </div>
-                        <div class="padding-top-5">
-                            <div>1:00 pm, 25 January 2015</div>
-                            <div> to</div>
-                            <div> 2:00 pm, 26 January 2015</div>
-                        </div>
-                        <button type="button" class=" btn-l btn-2 ">Join</button>
+                        <button type="button" class=" btn-l btn-2 " ng-click="createGroup(user.id)">Join</button>
                     </div>
                 </div>
             </div>

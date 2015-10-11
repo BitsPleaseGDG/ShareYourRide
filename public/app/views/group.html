@@ -14,30 +14,31 @@
             <div class="text-center"><img ng-src="{{user.avatar}}" class="img img-circle">
 
                 <div class="text-center name-title">Group Travel</div>
-                <div class="text-center name-subtitle">from IIT Kanpur to Railway Station</div>
+                <div class="text-center name-subtitle">from {{group.start_from}} to {{group.upto}}</div>
 
 
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" ng-repeat="record in data">
                 <div class="search-dialog">
                     <!--<img ng-src="{{user.avatar}}" class="img img-circle">-->
                     <div class="padding-bottom-5">
-                        <div class="text-center"><img ng-src="{{user.avatar}}" class="img img-circle">
+                        <div class="text-center"><img ng-src="{{record.avatar}}" class="img img-circle">
 
-                            <div class="text-center name-title">{{user.name}}</div>
-                            <div class="text-center name-subtitle">98526545552</div>
+                            <div class="text-center name-title">{{record.name}}</div>
+                            <div class="text-center name-subtitle">{{record.email}}</div>
                             <br/>
                         </div>
                         <div class="padding-top-5">
-                            <div>1:00 pm, 25 January 2015</div>
+                            <div>{{group.start_datetime}}</div>
                             <div> to</div>
-                            <div> 2:00 pm, 26 January 2015</div>
+                            <div>{{group.end_datetime}}</div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
