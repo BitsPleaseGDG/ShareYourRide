@@ -9,6 +9,9 @@ var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session')
 
 var routes = require('./routes/index');
+var users = require('./routes/users');
+var travel= require('./routes/travel');
+var ping = require('./routes/ping');
 var rest = require('./routes/rest');
 var connect = require('./models')().connection
 
@@ -26,11 +29,6 @@ passport.deserializeUser(function(obj, done) {
 done(null, obj);
 });
 
-
-// var User = mongoose.model('User', {
-//   oauthID: Number,
-//   name: String
-// });
 
 // config
 passport.use(new FacebookStrategy({
@@ -157,9 +155,12 @@ app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes)
 
-app.use('/api/v1', rest)
+
+app.use('/users', users);
+// app.use('/travel',travel);
+
+app.use('/api/v1', rest);
 app.get('/dashboard', ensureAuthenticated, function(req, res){
   // res.send(req.user);
 res.render('dashboard', { user: req.user });
@@ -222,13 +223,6 @@ if (app.get('env') === 'development') {
   });
 }
 
-
-connection.connect();
-connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
- if (err) throw err;
-
- console.log('The solution is: ', rows[0].solution);
-});
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
@@ -239,6 +233,16 @@ app.use(function(err, req, res, next) {
   });
 });
 
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'hack'
+});
+connection.connect();
+app.connection=connection;
+
 function ensureAuthenticated(req, res, next) {
 if (req.isAuthenticated()) { return next(); }
 res.redirect('/')
@@ -247,5 +251,6 @@ function notAuthenticated(req, res, next) {
 if (!req.isAuthenticated()) { return next(); }
 res.redirect('/dashboard')
 }
+
 
 module.exports = app;
