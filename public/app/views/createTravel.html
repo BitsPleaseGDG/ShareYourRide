@@ -33,13 +33,13 @@
 
         <div class="row">
             <h1>Location</h1>
-            <div class="col-sm-5"><input type="Text"/></div>
+            <div class="col-sm-5"><input type="text" ng-model="model.from"/></div>
             <div class="col-sm-2">To</div>
-            <div class="col-sm-5"><input type="text"/></div>
+            <div class="col-sm-5"><input type="text" ng-model="model.to"/></div>
         </div>
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4">
-                <div class="btn btn-block btn-primary">Create</div>
+                <button ng-click="submit()" class="btn btn-block btn-primary">Create</button>
             </div>
         </div>
         </div>
