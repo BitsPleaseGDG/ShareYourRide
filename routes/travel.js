@@ -12,6 +12,7 @@ router.get('/add',function(req,res,next){
 	var end=req.query.end;
 	var from=req.query.from;
 	var to=req.query.to;
+	console.log(id)
 	if(start==undefined || end==undefined||from==undefined||to==undefined){
 		res.send(JSON.stringify(response));
 	}

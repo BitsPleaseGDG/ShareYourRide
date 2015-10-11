@@ -158,9 +158,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/users', users);
-app.use('/travel',travel);
+// app.use('/travel',travel);
 
-app.use('/api/v1', rest)
+app.use('/api/v1', rest);
 app.get('/dashboard', ensureAuthenticated, function(req, res){
   // res.send(req.user);
 res.render('dashboard', { user: req.user });
