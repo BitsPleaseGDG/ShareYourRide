@@ -102,7 +102,6 @@ router.get('/addtogroup',ensureAPIAuthenticated,function(req,res,next){
 	var id=req.user.id;
 	var group_id=req.query.group_id;
 	var travel_id=req.query.travel_id;
-	console.log(id)
 	var query="SELECT * FROM `hack`.`travels` WHERE `id` = ? AND `user_id` = ?  AND `engaged` = ?";
 	connection.query(query,[travel_id,id,0],function(err,rows){
 		if(rows.length < 1){
@@ -248,12 +247,15 @@ function getFeed(s1,e1,start_from,upto,travelid,res){
 	var count=0;
 	var tosend={};
 	var totalq=2;
-	var query='SELECT travels.*,users.avatar,users.name FROM travels WHERE (`start_datetime` <= ?) AND (`end_datetime` >= ? ) AND `id` != ?  AND engaged=0 AND `start_from`=? AND `upto`=?';
-	query+=' LEFT JOIN users ON users.id=travels.user_id';
+	var query='SELECT travels.*,users.avatar,users.name FROM travels';
+	query+=' INNER JOIN users ON travels.user_id=users.id';
+	query+=' WHERE (`start_datetime` <= ?) AND (`end_datetime` >= ? ) AND `travels`.`id` != ?  AND engaged=0 AND `start_from`=? AND `upto`=?';
 	connection.query(query,[e1,s1,travelid,start_from,upto],function(err,rows,fields){
 		if(err){
 			tosend.travels=[];
+			console.log(err);
 		}else{
+			console.log(rows)
 			tosend.travels=rows;
 		}
 		count++;
