@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
 });
 router.get('/add',function(req,res,next){
 	var response={type:false};
-	var id=req.query.id;
+	var id=req.user.id;
 	var start=req.query.start;
 	var end=req.query.end;
 	var from=req.query.from;
@@ -40,6 +40,11 @@ router.get('/add',function(req,res,next){
 	}
 	var query="INSERT INTO `hack`.`travels` (`id`, `user_id`, `start_datetime`, `end_datetime`, `start_from`, `upto`) VALUES (NULL, ?, ?, ?, ?, ?)";
 	connection.query(query,[id,start,end,from,to],function(err,rows){
+		if(err){
+			console.log(err);
+			res.json(response);
+			return;
+		}
 		response.type=true;
 		response.insert_id=rows.insertId;
 		res.send(JSON.stringify(response));
