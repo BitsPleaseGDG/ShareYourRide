@@ -121,7 +121,27 @@ router.get('/addtogroup',ensureAPIAuthenticated,function(req,res,next){
 		})
 	});
 })
+router.get('/alltrip',function(req,res){
+	var id=6;
+	var tosend={};
+	var query='SELECT users.id as user_id, users.name as name, groups.id as group_id, groups.capacity as capacity, groups.start_from as start_from, groups.upto as upto';
+	query+=' FROM travels';
+	query+=' INNER JOIN group_travels ON travels.id = group_travels.travel_id';
+	query+=' INNER JOIN users ON travels.user_id=users.id';
+	query+=' INNER JOIN groups ON groups.id = group_travels.group_id'
+	query+=' WHERE users.id=? AND travels.engaged=1'
+	//query+=' WHERE groups.start_from = ? AND groups.upto = ? AND travels.engaged=1 AND (groups.start_datetime <= ? AND groups.end_datetime >=?)';
 
+	connection.query(query,[id],function(err,rows){
+		if(err){
+			console.log(err)
+			tosend.groups=query;
+		}else{
+			tosend.groups=rows;
+		}
+		res.send(tosend);
+	})
+})
 function GroupEmptiness(id,callback){
 	var query='SELECT COUNT(*) as count FROM `hack`.`group_travels` WHERE `group_id`=?';
 	var count;
@@ -208,7 +228,7 @@ function getFeed(s1,e1,start_from,upto,travelid,res){
 		}
 	});
 
-	var query='SELECT users.id as user_id, users.name as name, groups.id as group_id, groups.capacity as capacity, groups.start_from as start_from, groups.upto as upto';
+	var query='SELECT users.id as user_id, users.avatar, users.name as name, groups.id as group_id, groups.capacity as capacity, groups.start_from as start_from, groups.upto as upto, groups.start_datetime, groups.end_datetime';
 	query+=' FROM travels';
 	query+=' INNER JOIN group_travels ON travels.id = group_travels.travel_id';
 	query+=' INNER JOIN users ON travels.user_id=users.id';
