@@ -169,7 +169,6 @@ router.get('/groupinfo',function(req,res){
 		connection.query(query,[group_id],function(err,rows){
 			if(rows==undefined){
 				tosend.hello='hello'
-				console.log(err)
 				res.send(tosend);
 				return;
 			}
