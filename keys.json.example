@@ -14,5 +14,8 @@
         "host" : "Some Host",
         "database" : "Some Database",
         "password" : "Some Password"
+        },
+    "session": {
+        "secret" : "Some Secret"
         }
 }
