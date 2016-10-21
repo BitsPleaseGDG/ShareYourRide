@@ -1,4 +1,4 @@
-var config = require('../keys.js');
+var config = require('../keys.json');
 var mysql = require('mysql');
 
  module.exports = function () {

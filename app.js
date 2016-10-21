@@ -15,7 +15,7 @@ var ping = require('./routes/ping');
 var rest = require('./routes/rest');
 var connect = require('./models')().connection
 
-var config = require('./keys.js')
+var config = require('./keys.json')
 var passport = require('passport')
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
