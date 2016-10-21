@@ -1,0 +1,18 @@
+{
+    "facebook": {    
+        "clientID" : "Some Client ID",
+        "clientSecret" : "Some Client Secret",
+        "callbackURL" : "Some Callback URL"
+        },
+    "google": {    
+        "clientID" : "Some Client ID",
+        "clientSecret" : "Some Client Secret",
+        "callbackURL" : "Some Callback URL"
+        },
+    "mysql": {    
+        "user" : "Some Username",
+        "host" : "Some Host",
+        "database" : "Some Database",
+        "password" : "Some Password"
+        }
+}
